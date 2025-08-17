@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Meta Infra | AI·GPU 전문 데이터센터 임차</title>
+  <meta name="description" content="GPU·Liquid Cooling 기반 글로벌 스펙 AI 데이터센터. 아산에서 무한 확장. 임차 문의와 투자 제안서 다운로드." />
+  <meta name="keywords" content="AI 데이터센터, GPU 코로케이션, Liquid Cooling, 아산 데이터센터, TIA-942B, PUE 1.28, N+2" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Meta Infra | AI·GPU 전문 데이터센터 임차" />
+  <meta property="og:description" content="GPU·Liquid Cooling 기반 글로벌 스펙 AI 데이터센터. 아산에서 무한 확장. 임차 문의와 투자 제안서 다운로드." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.meta-infra.com" />
+  <meta property="og:image" content="https://dummyimage.com/1200x630/0b1020/ffffff.png&text=Meta+Infra" />
+
+  <style>
+    :root {
+      /* Brand / Dark Mode First */
+      --bg: #0b1020;            /* deep navy */
+      --surface: #121826;       /* panel */
+      --muted: #1b2336;         /* cards alt */
+      --text: #e5e7eb;          /* primary text */
+      --text-dim: #b6c2d9;      /* secondary text */
+      --primary: #3b82f6;       /* action blue */
+      --primary-600: #2563eb;   /* hover */
+      --accent: #22c55e;        /* ESG green */
+      --danger: #ef4444;        /* problem red */
+      --outline: #253758;       /* borders */
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+      --container: 1200px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Pretendard", "Noto Sans KR", Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 70% -10%, rgba(37, 99, 235, .15), transparent),
+                  radial-gradient(800px 400px at 10% 10%, rgba(34, 197, 94, .10), transparent),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .container { width: min(100%, var(--container)); margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(120%) blur(8px);
+      background: linear-gradient(180deg, rgba(11,16,32,.85), rgba(11,16,32,.65));
+      border-bottom: 1px solid var(--outline);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: .4px; }
+    .brand-mark { width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), #60a5fa); box-shadow: inset 0 0 0 2px rgba(255,255,255,.08); }
+
+    .nav-links { display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: var(--text-dim); font-weight: 600; font-size: 14px; opacity: .9; }
+    .nav-links a:hover { color: #fff; }
+
+    .cta { display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 12px; background: var(--primary); color: white; font-weight: 700; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,.08); }
+    .cta:hover { background: var(--primary-600); }
+    .cta.secondary { background: transparent; color: var(--text); border: 1px solid var(--outline); box-shadow: none; }
+    .cta.secondary:hover { border-color: #375074; }
+
+    /* Mobile nav */
+    .hamburger { display: none; width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--outline); align-items: center; justify-content: center; }
+    .hamburger span { width: 18px; height: 2px; background: var(--text); position: relative; display: block; }
+    .hamburger span::before, .hamburger span::after { content: ""; position: absolute; left: 0; right: 0; height: 2px; background: var(--text); }
+    .hamburger span::before { top: -6px; } .hamburger span::after { top: 6px; }
+
+    @media (max-width: 980px) {
+      .nav-links { display: none; }
+      .hamburger { display: inline-flex; }
+    }
+
+    /* Hero */
+    .hero { position: relative; overflow: clip; }
+    .hero .inner { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; padding: 72px 0; align-items: center; }
+    .eyebrow { color: var(--accent); font-weight: 800; letter-spacing: .12em; text-transform: uppercase; font-size: 12px; }
+    .h1 { font-size: clamp(28px, 4vw, 48px); line-height: 1.2; letter-spacing: -0.02em; margin: 10px 0 16px; font-weight: 900; }
+    .subtitle { color: var(--text-dim); font-size: clamp(16px, 1.8vw, 18px); }
+    .hero-cta { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+
+    .glass { background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border: 1px solid var(--outline); border-radius: var(--radius); box-shadow: var(--shadow); }
+
+    .spec-badges { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    .badge { padding: 8px 12px; border-radius: 999px; border: 1px solid var(--outline); color: var(--text-dim); font-weight: 700; font-size: 12px; background: rgba(255,255,255,.02); }
+
+    .hero-viz { position: relative; }
+    .rack-card { padding: 20px; }
+    .rack { height: 280px; border-radius: 14px; background: linear-gradient(180deg, #0e1428, #0a0f1f); border: 1px solid #24314d; padding: 14px; display: grid; grid-template-rows: repeat(6, 1fr); gap: 8px; }
+    .u { background: linear-gradient(180deg, #101a34, #0c142a); border: 1px solid #2a3b62; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(59, 130, 246, .2); }
+    .cooling { position: absolute; inset: -30px -18px auto auto; padding: 12px 14px; border-radius: 12px; border: 1px solid #2b3f63; background: #0c1324; color: var(--text-dim); font-size: 12px; }
+    .cooling b { color: #9cc3ff; }
+
+    @media (max-width: 980px) {
+      .hero .inner { grid-template-columns: 1fr; padding: 40px 0; }
+      .hero-viz { order: -1; }
+    }
+
+    /* Section shells */
+    section { padding: 76px 0; }
+    section.alt { background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.02)); border-top: 1px solid var(--outline); border-bottom: 1px solid var(--outline); }
+
+    .section-head { margin-bottom: 26px; }
+    .kicker { color: var(--accent); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; font-size: 12px; }
+    .h2 { font-size: clamp(22px, 3vw, 34px); line-height: 1.25; margin: 8px 0 6px; font-weight: 900; }
+    .lede { color: var(--text-dim); }
+
+    /* Problem list */
+    .problem { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+    .problem .card { grid-column: span 4; background: linear-gradient(180deg, rgba(239,68,68,.08), rgba(239,68,68,.03)); border: 1px solid rgba(239,68,68,.25); border-radius: var(--radius); padding: 18px; }
+    .problem .card h4 { margin: 0 0 8px; font-size: 16px; }
+    .problem .card p { margin: 0; color: #fca5a5; }
+    @media (max-width: 980px) { .problem .card { grid-column: span 12; } }
+
+    /* Benefits list */
+    .benefits { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .benefit { grid-column: span 6; background: var(--surface); border: 1px solid var(--outline); border-radius: var(--radius); padding: 20px; }
+    .benefit .title { font-weight: 800; }
+    .benefit .meta { color: var(--text-dim); margin-top: 6px; }
+    @media (max-width: 980px) { .benefit { grid-column: span 12; } }
+
+    /* Specs */
+    .specs { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; align-items: start; }
+    .spec-table { grid-column: span 7; background: var(--surface); border: 1px solid var(--outline); border-radius: var(--radius); overflow: hidden; }
+    .spec-table table { width: 100%; border-collapse: collapse; }
+    .spec-table th, .spec-table td { padding: 14px 16px; border-bottom: 1px solid var(--outline); text-align: left; }
+    .spec-table th { width: 36%; color: var(--text-dim); font-weight: 700; }
+    .spec-visual { grid-column: span 5; }
+    .viz-box { border-radius: var(--radius); border: 1px solid var(--outline); background: linear-gradient(180deg, #0e1428, #0a0f1f); padding: 14px; height: 100%; display: grid; place-items: center; }
+
+    @media (max-width: 980px) { .spec-table { grid-column: span 12; } .spec-visual { grid-column: span 12; } }
+
+    /* USP */
+    .usp { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .usp .item { grid-column: span 4; padding: 18px; background: var(--surface); border: 1px solid var(--outline); border-radius: var(--radius); }
+    .usp .item h4 { margin: 0 0 6px; }
+    @media (max-width: 980px) { .usp .item { grid-column: span 12; } }
+
+    /* Partners */
+    .logo-strip { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; align-items: center; }
+    .logo-card { grid-column: span 3; height: 72px; border-radius: 12px; border: 1px solid var(--outline); background: var(--muted); display: grid; place-items: center; color: var(--text-dim); font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    @media (max-width: 980px) { .logo-card { grid-column: span 6; } }
+
+    /* Investor */
+    .investor { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .investor .panel { grid-column: span 7; background: var(--surface); border: 1px solid var(--outline); border-radius: var(--radius); padding: 18px; }
+    .investor .chart { grid-column: span 5; }
+    @media (max-width: 980px) { .investor .panel, .investor .chart { grid-column: span 12; } }
+
+    /* Process */
+    .steps { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .step { grid-column: span 4; background: var(--surface); border: 1px solid var(--outline); border-radius: var(--radius); padding: 18px; }
+    .step .num { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--primary); font-weight: 900; }
+    @media (max-width: 980px) { .step { grid-column: span 12; } }
+
+    /* Contact / CTA */
+    .cta-panel { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; align-items: center; }
+    .cta-copy { grid-column: span 7; }
+    .cta-form { grid-column: span 5; background: var(--surface); border: 1px solid var(--outline); border-radius: var(--radius); padding: 18px; }
+    .field { display: grid; gap: 6px; margin-bottom: 12px; }
+    .input, textarea { width: 100%; padding: 12px 14px; border-radius: 12px; background: var(--muted); border: 1px solid var(--outline); color: var(--text); resize: vertical; }
+    .help { color: var(--text-dim); font-size: 12px; }
+    @media (max-width: 980px) { .cta-copy, .cta-form { grid-column: span 12; } }
+
+    /* FAQ */
+    .faq { display: grid; grid-template-columns: repeat(12, 1fr); gap: 12px; }
+    .faq details { grid-column: span 12; background: var(--surface); border: 1px solid var(--outline); border-radius: var(--radius); padding: 14px 16px; }
+    .faq summary { cursor: pointer; font-weight: 800; }
+
+    /* Footer */
+    footer { padding: 40px 0; border-top: 1px solid var(--outline); background: #0a0f1f; }
+    .foot { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+    .foot .col { grid-column: span 4; color: var(--text-dim); }
+    .foot .col h4 { margin: 0 0 8px; color: var(--text); }
+    .sub-cta { display: inline-flex; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--outline); }
+    @media (max-width: 980px) { .foot .col { grid-column: span 12; } }
+
+    /* Utilities */
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+    .hidden { display: none !important; }
+    .fade { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .fade.in { opacity: 1; transform: translateY(0); }
+
+    /* Floating CTA (mobile) */
+    .fab {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      display: none; gap: 10px; padding: 10px 12px; border-radius: 999px; background: rgba(18,24,38,.92); border: 1px solid var(--outline); box-shadow: var(--shadow);
+    }
+    .fab a { font-size: 14px; padding: 10px 14px; border-radius: 999px; }
+    @media (max-width: 820px) { .fab { display: flex; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="메인으로">
+        <span class="brand-mark" aria-hidden></span>
+        <span>Meta Infra</span>
+      </a>
+      <nav class="nav-links" aria-label="주요 메뉴">
+        <a href="#benefits">혜택</a>
+        <a href="#specs">사양</a>
+        <a href="#usp">USP</a>
+        <a href="#process">프로세스</a>
+        <a href="#investor">투자자</a>
+        <a class="cta secondary" href="#contact">투자 제안서</a>
+        <a class="cta" href="#contact">임차 문의</a>
+      </nav>
+      <button class="hamburger" aria-label="모바일 메뉴 열기" id="menuBtn"><span></span></button>
+    </div>
+  </header>
+
+  <!-- Mobile menu sheet -->
+  <div id="mobileMenu" class="hidden" style="position:fixed;inset:64px 0 0 0;background:rgba(10,15,31,.98);backdrop-filter:blur(6px);border-top:1px solid var(--outline);z-index:40;">
+    <div class="container" style="padding:18px 20px;display:grid;gap:10px;">
+      <a href="#benefits" class="sub-cta">혜택</a>
+      <a href="#specs" class="sub-cta">사양</a>
+      <a href="#usp" class="sub-cta">USP</a>
+      <a href="#process" class="sub-cta">프로세스</a>
+      <a href="#investor" class="sub-cta">투자자</a>
+      <a href="#contact" class="cta">임차 문의하기</a>
+      <a href="#contact" class="cta secondary">투자 제안서 다운로드</a>
+    </div>
+  </div>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container inner">
+        <div>
+          <div class="eyebrow fade">AI Data Center for Lease</div>
+          <h1 class="h1 fade">GPU·Liquid Cooling 기반 글로벌 스펙 데이터센터,<br/>아산에서 <em style="font-style:normal;color:#9cc3ff">무한한 확장</em>을 경험하세요.</h1>
+          <p class="subtitle fade">AI 워크로드를 위한 안정적 전력과 냉각, 글로벌 표준 설계까지. 지금 임차를 시작하세요.</p>
+          <div class="spec-badges fade" aria-label="핵심 사양 배지">
+            <span class="badge">132kW / rack</span>
+            <span class="badge">PUE 1.28</span>
+            <span class="badge">N+2 전력 이중화</span>
+            <span class="badge">TIA-942B</span>
+          </div>
+          <div class="hero-cta fade" role="group" aria-label="주요 행동">
+            <a class="cta" href="#contact">임차 문의하기</a>
+            <a class="cta secondary" href="#contact">투자 제안서 다운로드</a>
+          </div>
+        </div>
+        <div class="hero-viz fade">
+          <div class="glass rack-card">
+            <div class="cooling">혼합 냉각: <b>Liquid + Air</b></div>
+            <div class="rack" aria-label="GPU 랙 시각화">
+              <div class="u"></div>
+              <div class="u"></div>
+              <div class="u"></div>
+              <div class="u"></div>
+              <div class="u"></div>
+              <div class="u"></div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:10px;color:var(--text-dim);font-size:12px;">
+              <span>▲ GPU Blade</span><span>● 수냉 매니폴드</span><span>■ 공랭 채널</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem & Empathy -->
+    <section class="alt" aria-labelledby="problem-title">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">문제 인식</div>
+          <h2 class="h2" id="problem-title">기존 데이터센터, 이런 어려움 겪고 계신가요?</h2>
+          <p class="lede">확장성과 효율, 그리고 표준 준수가 동시에 필요합니다.</p>
+        </div>
+        <div class="problem">
+          <div class="card fade">
+            <h4>수도권 전력 부족</h4>
+            <p>고성능 GPU 클러스터 운영 불가, 전력 승인 대기 장기화</p>
+          </div>
+          <div class="card fade">
+            <h4>노후 인프라</h4>
+            <p>랙 밀도 한계로 증설/확장 어려움</p>
+          </div>
+          <div class="card fade">
+            <h4>에너지 비효율</h4>
+            <p>높은 PUE로 OPEX 부담 증가</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Solution & Benefits -->
+    <section id="benefits" aria-labelledby="benefit-title">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">솔루션</div>
+          <h2 class="h2" id="benefit-title">AI 시대, Meta Infra 데이터센터가 답입니다</h2>
+          <p class="lede">Feature → Benefit 중심으로 실사용 가치를 전달합니다.</p>
+        </div>
+        <div class="benefits">
+          <article class="benefit fade">
+            <div class="title">GPU 수냉/공냉 혼합 설계</div>
+            <div class="meta">132kW/rack 지원으로 고밀도 AI 워크로드를 안정적으로 구동</div>
+          </article>
+          <article class="benefit fade">
+            <div class="title">PUE 1.28 친환경 설계</div>
+            <div class="meta">전력 비용을 절감하고 ESG 목표 달성을 지원</div>
+          </article>
+          <article class="benefit fade">
+            <div class="title">N+2 전력 이중화</div>
+            <div class="meta">중단 없는 서비스로 핵심 비즈니스를 보호</div>
+          </article>
+          <article class="benefit fade">
+            <div class="title">TIA-942B 글로벌 표준</div>
+            <div class="meta">국내외 CSP, 엔터프라이즈의 요구를 충족</div>
+          </article>
+        </div>
+        <div style="margin-top:20px" class="fade">
+          <a class="cta secondary" href="#specs">상세 사양서 보기</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Specs -->
+    <section id="specs" class="alt" aria-labelledby="specs-title">
+      <div class="container specs">
+        <div class="section-head" style="grid-column: 1 / -1;">
+          <div class="kicker">사양</div>
+          <h2 class="h2" id="specs-title">글로벌 스펙의 AI 데이터센터, Meta Infra 아산</h2>
+        </div>
+        <div class="spec-table fade" role="table" aria-label="데이터센터 사양">
+          <table>
+            <tbody>
+              <tr><th>랙 수용량</th><td>고밀도 랙 지원 (GPU 최적화)</td></tr>
+              <tr><th>전력 용량</th><td>132kW / rack, N+2 이중화</td></tr>
+              <tr><th>냉각 방식</th><td>Liquid + Air 혼합, 핫/콜드 아이슬 컨테인먼트</td></tr>
+              <tr><th>전력 효율</th><td>PUE 1.28 (목표 운영값)</td></tr>
+              <tr><th>표준/인증</th><td>TIA-942B 기준 설계</td></tr>
+              <tr><th>입지</th><td>아산시 산업단지 – 전력 접근성/확장 유리</td></tr>
+              <tr><th>보안</th><td>2FA 출입, 구역별 CCTV/침입 탐지</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="spec-visual fade">
+          <div class="viz-box" aria-hidden>
+            <!-- Simple illustrative SVG diagram -->
+            <svg width="100%" height="240" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="전력/냉각 다이어그램">
+              <defs>
+                <linearGradient id="g1" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#3b82f6"/>
+                  <stop offset="100%" stop-color="#60a5fa"/>
+                </linearGradient>
+                <linearGradient id="g2" x1="0" x2="1">
+                  <stop offset="0%" stop-color="#22c55e"/>
+                  <stop offset="100%" stop-color="#86efac"/>
+                </linearGradient>
+              </defs>
+              <rect x="20" y="20" width="160" height="120" rx="12" fill="#0f1830" stroke="#24314d"/>
+              <text x="100" y="85" fill="#b6c2d9" text-anchor="middle" font-weight="700">전력 UPS</text>
+              <rect x="420" y="20" width="160" height="120" rx="12" fill="#0f1830" stroke="#24314d"/>
+              <text x="500" y="85" fill="#b6c2d9" text-anchor="middle" font-weight="700">GPU Racks</text>
+              <path d="M180 80 H420" stroke="url(#g1)" stroke-width="6"/>
+              <circle cx="300" cy="80" r="5" fill="#3b82f6" />
+              <rect x="220" y="155" width="160" height="60" rx="12" fill="#0f1830" stroke="#24314d"/>
+              <text x="300" y="190" fill="#b6c2d9" text-anchor="middle" font-weight="700">Liquid Cooling</text>
+              <path d="M300 155 V120" stroke="url(#g2)" stroke-width="6"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- USP -->
+    <section id="usp" aria-labelledby="usp-title">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">차별화</div>
+          <h2 class="h2" id="usp-title">Meta Infra가 특별한 이유</h2>
+        </div>
+        <div class="usp">
+          <div class="item fade">
+            <h4>국내 최초 지방 AI 데이터센터</h4>
+            <p class="lede">수도권 전력/입지 한계를 넘어 대규모 확장성 확보</p>
+          </div>
+          <div class="item fade">
+            <h4>신뢰할 수 있는 파트너십</h4>
+            <p class="lede">KT · 삼성물산 · IBK투자증권 협력</p>
+          </div>
+          <div class="item fade">
+            <h4>입지 경쟁력</h4>
+            <p class="lede">아산시 산업단지 – 전력 접근성 및 네트워크 우수</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social Proof -->
+    <section class="alt" aria-labelledby="social-proof-title">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">사회적 증거</div>
+          <h2 class="h2" id="social-proof-title">이미 많은 파트너가 함께하고 있습니다</h2>
+        </div>
+        <div class="logo-strip">
+          <div class="logo-card fade">KT</div>
+          <div class="logo-card fade">Samsung C&amp;T</div>
+          <div class="logo-card fade">IBK</div>
+          <div class="logo-card fade">Local Gov</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:16px;margin-top:16px;">
+          <div style="grid-column:span 6" class="fade">
+            <div class="glass" style="padding:16px;border-radius:var(--radius);">
+              <blockquote style="margin:0;font-weight:700">“도입 후 GPU 클러스터 확장이 계획 대비 40% 빨라졌습니다.”</blockquote>
+              <div class="help">— 파트너사 담당자</div>
+            </div>
+          </div>
+          <div style="grid-column:span 6" class="fade">
+            <div class="glass" style="padding:16px;border-radius:var(--radius);">
+              <div style="display:flex;gap:12px;align-items:center;">
+                <div style="width:10px;height:10px;border-radius:99px;background:var(--accent)"></div>
+                <div class="help">평균 재계약률 <b style="color:#fff">98%</b></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Investor section -->
+    <section id="investor" aria-labelledby="investor-title">
+      <div class="container investor">
+        <div class="section-head" style="grid-column:1/-1;">
+          <div class="kicker">투자</div>
+          <h2 class="h2" id="investor-title">투자자에게도 검증된 기회입니다</h2>
+        </div>
+        <div class="panel fade">
+          <ul style="margin:0;padding-left:18px;">
+            <li>주요 파트너: KT · 삼성물산 · IBK투자증권 참여</li>
+            <li>성장성: AI·클라우드 인프라 수요 급증 → 미래 가치</li>
+            <li>안정성: 지방 최초 + 전력 확보 + 공공 협력</li>
+          </ul>
+          <div style="margin-top:14px;display:flex;gap:12px;flex-wrap:wrap;">
+            <a class="cta secondary" href="#contact">투자 제안서 다운로드</a>
+          </div>
+        </div>
+        <div class="chart fade">
+          <div class="glass" style="padding:14px;border-radius:var(--radius);">
+            <!-- Simple growth chart -->
+            <svg width="100%" height="220" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="수요 성장 차트">
+              <polyline fill="none" stroke="#60a5fa" stroke-width="3" points="20,180 120,160 220,140 320,120 420,90 520,60"/>
+              <polyline fill="none" stroke="#86efac" stroke-width="3" points="20,180 120,168 220,150 320,135 420,120 520,105"/>
+              <text x="24" y="198" font-size="12" fill="#b6c2d9">2023</text>
+              <text x="510" y="198" font-size="12" fill="#b6c2d9">2027</text>
+            </svg>
+            <div class="help">* 가시화 목적의 예시 그래프</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section id="process" class="alt" aria-labelledby="process-title">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">프로세스</div>
+          <h2 class="h2" id="process-title">단 3단계로 임차 가능합니다</h2>
+        </div>
+        <div class="steps">
+          <div class="step fade">
+            <div class="num">1</div>
+            <h4>상담 신청</h4>
+            <p class="lede">온라인 폼으로 프로젝트 요건을 공유하세요.</p>
+          </div>
+          <div class="step fade">
+            <div class="num">2</div>
+            <h4>제안서 검토</h4>
+            <p class="lede">맞춤 사양/요금 협의를 진행합니다.</p>
+          </div>
+          <div class="step fade">
+            <div class="num">3</div>
+            <h4>계약 & 입주</h4>
+            <p class="lede">준비 완료 후 빠르게 랙 인입/시운전 진행.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Final CTA & Contact -->
+    <section id="contact" aria-labelledby="cta-title">
+      <div class="container cta-panel">
+        <div class="cta-copy">
+          <div class="section-head">
+            <div class="kicker">문의</div>
+            <h2 class="h2" id="cta-title">AI 혁신 인프라, 지금 바로 선점하세요</h2>
+            <p class="lede">1분 안에 신청 가능 · 상담만으로는 비용 발생 없음</p>
+          </div>
+          <div class="fade">
+            <a class="cta" href="#form">임차 문의하기</a>
+            <a class="cta secondary" href="#form">투자 제안서 다운로드</a>
+          </div>
+        </div>
+        <form id="form" class="cta-form fade" autocomplete="on" novalidate>
+          <div class="field">
+            <label for="name">이름/회사명</label>
+            <input class="input" id="name" name="name" required placeholder="홍길동 / Meta Corp" />
+          </div>
+          <div class="field">
+            <label for="email">이메일</label>
+            <input class="input" id="email" name="email" type="email" required placeholder="you@company.com" />
+          </div>
+          <div class="field">
+            <label for="phone">연락처 (선택)</label>
+            <input class="input" id="phone" name="phone" placeholder="010-0000-0000" />
+          </div>
+          <div class="field">
+            <label for="need">요청 사항</label>
+            <textarea id="need" name="need" rows="4" placeholder="예) GPU 랙 20대, 100kW/rack 이상, Liquid cooling 필수"></textarea>
+          </div>
+          <div class="help">제출 시, 메일 클라이언트가 열리며 초안이 자동 생성됩니다.</div>
+          <button class="cta" type="submit">제출하기</button>
+          <div id="formMsg" class="help" style="margin-top:8px"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- FAQ (AEO) -->
+    <section aria-labelledby="faq-title" class="alt">
+      <div class="container">
+        <div class="section-head">
+          <div class="kicker">FAQ</div>
+          <h2 class="h2" id="faq-title">자주 묻는 질문</h2>
+        </div>
+        <div class="faq">
+          <details class="fade">
+            <summary>임차 최소 기간과 리드타임은 어떻게 되나요?</summary>
+            <p class="lede">일반적으로 12개월 이상을 권장하며, 프로젝트 규모에 따라 4–12주 내 랙 인입이 가능합니다.</p>
+          </details>
+          <details class="fade">
+            <summary>Liquid Cooling 관련 지원 범위는?</summary>
+            <p class="lede">매니폴드, CDU 연계, 누수 감지 및 알람까지 지원합니다. 상세 스펙은 상담 후 제안서로 제공합니다.</p>
+          </details>
+          <details class="fade">
+            <summary>네트워크 캐리어와 접속 방식은?</summary>
+            <p class="lede">주요 통신사 PoP 연동 및 클라우드 온램프 구성을 지원합니다.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="fab" aria-label="빠른 동작">
+    <a class="cta" href="#contact">임차 문의</a>
+    <a class="cta secondary" href="#contact">투자 제안서</a>
+  </div>
+
+  <footer>
+    <div class="container foot">
+      <div class="col">
+        <div class="brand" style="margin-bottom:8px"><span class="brand-mark"></span><b>Meta Infra</b></div>
+        <div class="help">ⓒ Meta Infra Co., Ltd. All rights reserved.</div>
+      </div>
+      <div class="col">
+        <h4>Contact</h4>
+        <div class="help">주소: (우)00000 충남 아산시 ○○산단로 00</div>
+        <div class="help">이메일: <a href="mailto:contact@meta-infra.com">contact@meta-infra.com</a></div>
+        <div class="help">전화: 000-0000-0000</div>
+      </div>
+      <div class="col">
+        <h4>투자자 전용 안내</h4>
+        <div class="help">투자 관련 문의는 <a href="mailto:investor@meta-infra.com">investor@meta-infra.com</a> 으로 별도 연락 바랍니다.</div>
+        <div style="margin-top:10px"><a class="sub-cta" href="#contact">투자자 상담 예약하기</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Meta Infra",
+    "url": "https://www.meta-infra.com",
+    "logo": "https://www.meta-infra.com/logo-dark.png",
+    "contactPoint": [{
+      "@type": "ContactPoint",
+      "telephone": "+82-00-0000-0000",
+      "contactType": "sales",
+      "email": "contact@meta-infra.com"
+    }]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {"@type": "Question","name": "임차 최소 기간과 리드타임은 어떻게 되나요?","acceptedAnswer": {"@type": "Answer","text": "일반적으로 12개월 이상을 권장하며, 프로젝트 규모에 따라 4–12주 내 랙 인입이 가능합니다."}},
+      {"@type": "Question","name": "Liquid Cooling 관련 지원 범위는?","acceptedAnswer": {"@type": "Answer","text": "매니폴드, CDU 연계, 누수 감지 및 알람까지 지원합니다. 상세 스펙은 상담 후 제안서로 제공합니다."}},
+      {"@type": "Question","name": "네트워크 캐리어와 접속 방식은?","acceptedAnswer": {"@type": "Answer","text": "주요 통신사 PoP 연동 및 클라우드 온램프 구성을 지원합니다."}}
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "AI 데이터센터 임차",
+    "serviceType": "Colocation / GPU Ready / Liquid Cooling",
+    "provider": {"@type":"Organization","name":"Meta Infra"},
+    "areaServed": "KR",
+    "offers": {"@type":"Offer","availability":"https://schema.org/InStock"}
+  }
+  </script>
+
+  <script>
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    menuBtn?.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    mobileMenu?.addEventListener('click', (e) => { if (e.target.tagName === 'A') mobileMenu.classList.add('hidden'); });
+
+    // Smooth scroll for in-page anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (!id || id === '#') return;
+        const el = document.querySelector(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Fade-in on view
+    const io = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) entry.target.classList.add('in');
+      }
+    }, { threshold: .15 });
+    document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+    // Simple mailto submit (static site friendly)
+    const form = document.getElementById('form');
+    const msg = document.getElementById('formMsg');
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const name = (data.get('name')||'').toString().trim();
+      const email = (data.get('email')||'').toString().trim();
+      if (!name || !email) {
+        msg.textContent = '이름과 이메일을 입력해 주세요.';
+        msg.style.color = '#fca5a5';
+        return;
+      }
+      const phone = (data.get('phone')||'').toString().trim();
+      const need = (data.get('need')||'').toString().trim();
+      const subject = encodeURIComponent(`[임차 문의] ${name}`);
+      const body = encodeURIComponent(`이름/회사: ${name}\n이메일: ${email}\n연락처: ${phone}\n요청 사항: ${need}`);
+      window.location.href = `mailto:contact@meta-infra.com?subject=${subject}&body=${body}`;
+      msg.textContent = '메일 작성 창이 열립니다. 전송 후 담당자가 연락드립니다.';
+      msg.style.color = '#b6c2d9';
+      form.reset();
+    });
+  </script>
+</body>
+</html>
