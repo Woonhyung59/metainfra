@@ -15,34 +15,23 @@
             color: #EFEFEF;
         }
         .section-container {
-            padding-top: 6rem;
-            padding-bottom: 6rem;
+            padding-top: 5rem;
+            padding-bottom: 5rem;
         }
-        .accent-yellow { color: #FFC82C; }
         .accent-cyan { color: #00D1FF; }
-        .btn-primary { 
+        .btn-primary {
             background-color: #3A7CF4;
             transition: background-color 0.3s, transform 0.3s;
         }
-        .btn-primary:hover { 
+        .btn-primary:hover {
             background-color: #2968d8;
             transform: translateY(-2px);
-        }
-        .btn-secondary {
-            background-color: transparent;
-            border: 1px solid #3A7CF4;
-            color: #3A7CF4;
-            transition: background-color 0.3s, color 0.3s;
-        }
-        .btn-secondary:hover {
-            background-color: #3A7CF4;
-            color: white;
         }
         /* 스크롤 애니메이션 */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
-            transition: opacity 0.8s, transform 0.8s;
+            transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
         .reveal.visible {
             opacity: 1;
@@ -51,7 +40,7 @@
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -2.75rem;
+            left: -2.75rem; /* 모바일에서는 pl-8 이므로 -2.25rem 이 되어야 함 */
             top: 0;
             width: 2px;
             height: 100%;
@@ -59,7 +48,7 @@
         }
         .timeline-dot {
             position: absolute;
-            left: -3.25rem;
+            left: -3.25rem; /* 모바일에서는 pl-8 이므로 -2.75rem 이 되어야 함 */
             top: 0.25rem;
             width: 1.5rem;
             height: 1.5rem;
@@ -70,12 +59,16 @@
             align-items: center;
             justify-content: center;
         }
+        @media (max-width: 768px) {
+            .timeline-item::before { left: -2.25rem; }
+            .timeline-dot { left: -2.75rem; }
+        }
     </style>
 </head>
 <body class="w-full">
 
-    <!-- 상단 고정 네비게이션 -->
-    <header class="sticky top-0 z-50 bg-gray-900/50 backdrop-blur-lg border-b border-gray-700/50">
+    <!-- 상단 고정 네비게이션 (모바일 메뉴 추가) -->
+    <header class="sticky top-0 z-50 bg-gray-900/70 backdrop-blur-lg border-b border-gray-700/50">
         <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <div class="flex items-center">
@@ -83,75 +76,107 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-4">
-                        <a href="#mockups" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">디자인 시안</a>
+                        <a href="#designs-survey" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">디자인 시안/설문</a>
                         <a href="#details" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">상세 내용</a>
                         <a href="#roadmap" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">실행 계획</a>
                     </div>
                 </div>
+                <!-- 모바일 메뉴 버튼 -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </nav>
+        <!-- 모바일 메뉴 (숨김/표시) -->
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#designs-survey" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">디자인 시안/설문</a>
+                <a href="#details" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">상세 내용</a>
+                <a href="#roadmap" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">실행 계획</a>
+            </div>
+        </div>
     </header>
 
     <main>
         <!-- 섹션 1: Hero -->
-        <section class="min-h-screen flex flex-col justify-center items-center text-center bg-cover bg-center" style="background-image: linear-gradient(rgba(18, 26, 42, 0.8), rgba(18, 26, 42, 1)), url('https://images.unsplash.com/photo-1580894908361-967195033215?q=80&w=2070&auto=format&fit=crop');">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section class="min-h-screen flex flex-col justify-center items-center text-center bg-cover bg-center px-4" style="background-image: linear-gradient(rgba(18, 26, 42, 0.8), rgba(18, 26, 42, 1)), url('https://images.unsplash.com/photo-1580894908361-967195033215?q=80&w=2070&auto=format&fit=crop');">
+            <div class="max-w-4xl mx-auto">
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-tight reveal">
                     메타인프라 디지털 경쟁력 강화<br><span class="accent-cyan">프로젝트 제안서</span>
                 </h1>
                 <p class="mt-4 text-lg text-gray-300 reveal" style="transition-delay: 200ms;">2주 완성, 방치된 웹사이트를 24시간 일하는 '디지털 영업사원'으로</p>
                 <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4 reveal" style="transition-delay: 400ms;">
-                     <a href="#mockups" class="btn-primary w-full sm:w-auto inline-block text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg">
-                        디자인 시안 보기
-                    </a>
-                    <a href="#details" class="btn-secondary w-full sm:w-auto inline-block font-bold py-4 px-10 rounded-full text-lg">
-                        제안 상세 내용 보기
+                    <a href="#designs-survey" class="btn-primary w-full sm:w-auto inline-block text-white font-bold py-4 px-10 rounded-full text-lg shadow-lg">
+                        디자인 시안 및 설문 보기
                     </a>
                 </div>
             </div>
         </section>
 
-        <!-- 섹션 2: 시안 보기 (핵심) -->
-        <section id="mockups" class="section-container bg-gray-900/30">
-            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <!-- 섹션 2: 시안 및 설문 (개선 및 추가) -->
+        <section id="designs-survey" class="section-container bg-gray-900/30">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                 <div class="reveal">
-                    <h2 class="text-3xl font-bold text-white">디자인 시안 미리보기</h2>
-                    <p class="mt-4 text-gray-400 max-w-2xl mx-auto">아래 버튼을 클릭하여 실제 구현될 웹사이트의 디자인과 모바일 환경에서의 동작을 미리 경험해 보세요.</p>
-                    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <a href="https://snail-radius-22408148.figma.site/" target="_blank" rel="noopener noreferrer" class="block bg-gray-800/50 p-8 rounded-lg text-left hover:bg-gray-800 transition-colors">
-                            <h3 class="text-xl font-bold text-white flex items-center">
-                                <span class="text-2xl mr-3">🎨</span>
-                                피그마 디자인 시안
+                    <h2 class="text-3xl font-bold text-white">디자인 시안 및 랜딩페이지 설문</h2>
+                    <p class="mt-4 text-gray-400 max-w-2xl mx-auto">새로운 디자인 시안을 확인하고, 더 나은 결과물을 위해 설문에 참여해주세요.</p>
+                    
+                    <!-- 설문조사 카드 (가장 중요하므로 맨 위, 크게) -->
+                    <div class="mt-12">
+                         <a href="https://woonhyung.notion.site/2540d5e0483180778553e3c586d0a14d?pvs=105" target="_blank" rel="noopener noreferrer" class="block bg-blue-900/30 border border-blue-500 p-8 rounded-lg text-center hover:bg-blue-900/50 transition-colors transform hover:-translate-y-1">
+                            <h3 class="text-2xl font-bold text-white flex items-center justify-center">
+                                <span class="text-3xl mr-3">📝</span>
+                                랜딩페이지 기획을 위한 설문
                             </h3>
-                            <p class="mt-2 text-sm text-gray-400">전체 페이지 구조와 디자인 시스템, 컴포넌트 등 상세한 디자인을 확인하실 수 있습니다.</p>
-                            <span class="inline-block mt-4 font-bold text-cyan-400 hover:text-cyan-300">피그마 시안 보기 &rarr;</span>
+                            <p class="mt-3 text-blue-300 max-w-xl mx-auto">프로젝트의 성공적인 진행을 위해 잠시 시간을 내어 의견을 들려주세요. 웹사이트의 핵심 방향을 결정하는 데 큰 도움이 됩니다.</p>
+                            <span class="inline-block mt-6 font-bold text-white bg-blue-600 hover:bg-blue-500 py-3 px-6 rounded-lg">설문 참여하기 &rarr;</span>
                         </a>
-                        <a href="http://metainfra.imweb.me" target="_blank" rel="noopener noreferrer" class="block bg-gray-800/50 p-8 rounded-lg text-left hover:bg-gray-800 transition-colors">
-                            <h3 class="text-xl font-bold text-white flex items-center">
-                                <span class="text-2xl mr-3">📱</span>
-                                아임웹 모바일 시안
-                            </h3>
-                            <p class="mt-2 text-sm text-gray-400">실제 스마트폰 환경에서 어떻게 보이고 동작하는지 직접 스크롤하며 경험할 수 있는 모바일 전용 시안입니다.</p>
-                            <span class="inline-block mt-4 font-bold text-cyan-400 hover:text-cyan-300">모바일 시안 보기 &rarr;</span>
+                    </div>
+
+                    <!-- 디자인 시안 그리드 -->
+                    <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- 추가 시안 1 -->
+                        <a href="https://tofu-guard-96751944.figma.site/" target="_blank" rel="noopener noreferrer" class="block bg-gray-800/50 p-6 rounded-lg text-left hover:bg-gray-800 transition-colors">
+                            <h3 class="text-xl font-bold text-white flex items-center"><span class="text-2xl mr-3">🎨</span>추가 시안 A</h3>
+                            <p class="mt-2 text-sm text-gray-400">새로운 컨셉의 디자인입니다. 피그마에서 확인해보세요.</p>
+                            <span class="inline-block mt-4 font-bold text-cyan-400 hover:text-cyan-300">시안 보기 &rarr;</span>
+                        </a>
+                        <!-- 추가 시안 2 -->
+                        <a href="https://beaver-dew-47496455.figma.site/" target="_blank" rel="noopener noreferrer" class="block bg-gray-800/50 p-6 rounded-lg text-left hover:bg-gray-800 transition-colors">
+                            <h3 class="text-xl font-bold text-white flex items-center"><span class="text-2xl mr-3">🎨</span>추가 시안 B</h3>
+                            <p class="mt-2 text-sm text-gray-400">B타입 레이아웃 제안입니다. 피그마에서 확인해보세요.</p>
+                            <span class="inline-block mt-4 font-bold text-cyan-400 hover:text-cyan-300">시안 보기 &rarr;</span>
+                        </a>
+                        <!-- 추가 시안 3 -->
+                        <a href="https://right-preset-91268716.figma.site/" target="_blank" rel="noopener noreferrer" class="block bg-gray-800/50 p-6 rounded-lg text-left hover:bg-gray-800 transition-colors">
+                            <h3 class="text-xl font-bold text-white flex items-center"><span class="text-2xl mr-3">🎨</span>추가 시안 C</h3>
+                            <p class="mt-2 text-sm text-gray-400">C타입 비주얼 제안입니다. 피그마에서 확인해보세요.</p>
+                            <span class="inline-block mt-4 font-bold text-cyan-400 hover:text-cyan-300">시안 보기 &rarr;</span>
                         </a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 상세 내용 시작 -->
-        <div id="details" class="border-t-2 border-cyan-400/20 pt-16">
-            <div class="text-center mb-16">
-                 <h2 class="text-3xl font-bold text-white reveal">제안 상세 내용</h2>
-                 <p class="mt-2 text-gray-400 reveal">프로젝트의 배경과 구체적인 계획을 확인하실 수 있습니다.</p>
+        <!-- 상세 내용 (구조 개선) -->
+        <div id="details" class="border-t-2 border-cyan-400/20">
+            <div class="text-center pt-16 mb-16 px-4">
+                 <h2 class="text-3xl font-bold text-white reveal">왜 웹사이트 개편이 필요한가?</h2>
+                 <p class="mt-2 text-gray-400 max-w-2xl mx-auto reveal">현재 웹사이트는 3가지 큰 기회비용을 발생시키고 있으며, 이번 프로젝트를 통해 비즈니스 엔진으로 전환합니다.</p>
             </div>
 
-            <!-- 상세 내용 1: 현 상태 진단 -->
-            <section id="diagnosis" class="section-container pt-0">
-                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-2xl font-bold text-white reveal">현재 웹사이트, <span class="accent-yellow">잠재력을 놓치고 있습니다.</span></h2>
-                    <p class="mt-4 text-gray-400 reveal">눈에 보이지 않는 3가지 큰 기회비용이 발생하고 있습니다.</p>
-                    <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- 문제점 -> 해결책 -> 기대효과 (하나의 흐름으로 통합) -->
+            <section class="section-container pt-0">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- 1. 문제점 -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                         <div class="bg-gray-800/50 p-8 rounded-lg reveal" style="transition-delay: 100ms;">
                             <div class="text-4xl mb-4">⏳</div>
                             <h3 class="text-xl font-bold text-white">멈춰버린 신뢰</h3>
@@ -168,14 +193,12 @@
                             <p class="mt-2 text-sm text-gray-400">검색엔진에 노출되지 않아, 잠재 고객이 귀사를 찾을 수 없습니다.</p>
                         </div>
                     </div>
-                </div>
-            </section>
 
-            <!-- 상세 내용 2: 핵심 변화 -->
-            <section id="vision" class="section-container bg-gray-900/30">
-                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-2xl font-bold text-white reveal">단순 개편을 넘어, <span class="accent-cyan">비즈니스 엔진을 장착합니다.</span></h2>
-                    <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-8 text-left">
+                    <!-- 2. 해결책 -->
+                    <div class="mt-16 text-center reveal">
+                        <h3 class="text-2xl font-bold text-white">단순 개편을 넘어, <span class="accent-cyan">비즈니스 엔진을 장착합니다.</span></h3>
+                    </div>
+                    <div class="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-8 text-left">
                         <div class="bg-gray-800/50 p-8 rounded-lg reveal">
                             <div class="text-3xl mb-4">🗺️</div>
                             <h3 class="text-xl font-bold text-white">전략적 스토리텔링: '왜 아산인가?'</h3>
@@ -187,123 +210,86 @@
                             <p class="mt-2 text-sm text-gray-400">명확한 CTA 버튼과 '인프라 가이드북' 제공을 통해, 단순 방문을 실질적인 '영업 기회'로 전환합니다.</p>
                         </div>
                     </div>
-                </div>
-            </section>
-            
-            <!-- 상세 내용 3: 기대 효과 -->
-            <section id="effects" class="section-container">
-                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h2 class="text-2xl font-bold text-white reveal">2주 후, 이렇게 달라집니다.</h2>
-                    <div class="mt-8 w-full overflow-x-auto reveal" style="transition-delay: 200ms;">
-                        <table class="w-full text-sm text-left text-gray-300 bg-gray-800/50 rounded-lg">
-                            <thead class="text-xs text-gray-400 uppercase">
-                                <tr>
-                                    <th scope="col" class="px-6 py-4">구분</th>
-                                    <th scope="col" class="px-6 py-4">Before (현재)</th>
-                                    <th scope="col" class="px-6 py-4">After (2주 후)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="border-t border-gray-700">
-                                    <th scope="row" class="px-6 py-4 font-medium text-white">역할</th>
-                                    <td class="px-6 py-4">낡은 회사 소개서</td>
-                                    <td class="px-6 py-4 font-bold accent-cyan">24시간 디지털 영업사원</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <th scope="row" class="px-6 py-4 font-medium text-white">성과</th>
-                                    <td class="px-6 py-4">문의 0건</td>
-                                    <td class="px-6 py-4 font-bold accent-cyan">신규 영업 문의 발생</td>
-                                </tr>
-                                <tr class="border-t border-gray-700">
-                                    <th scope="row" class="px-6 py-4 font-medium text-white">노출</th>
-                                    <td class="px-6 py-4">검색 결과 없음</td>
-                                    <td class="px-6 py-4 font-bold accent-cyan">구글/네이버 상위 노출</td>
-                                </tr>
-                                 <tr class="border-t border-gray-700">
-                                    <th scope="row" class="px-6 py-4 font-medium text-white">신뢰도</th>
-                                    <td class="px-6 py-4">정보 업데이트 부재</td>
-                                    <td class="px-6 py-4 font-bold accent-cyan">최신 정보 기반 전문가</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    
+                    <!-- 3. 기대효과 (모바일 최적화된 테이블) -->
+                    <div class="mt-16 text-center reveal">
+                         <h3 class="text-2xl font-bold text-white">2주 후, 이렇게 달라집니다.</h3>
                     </div>
-                </div>
-            </section>
-
-            <!-- 상세 내용 4: 실행 계획 (상세 버전) -->
-            <section id="roadmap" class="section-container bg-gray-900/30">
-                 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="text-center mb-12">
-                        <h2 class="text-2xl font-bold text-white reveal">단 2주, 속도와 결과 모두를 잡는 상세 실행 계획</h2>
-                        <p class="mt-2 text-gray-400 reveal">성공적인 프로젝트를 위한 체계적인 타임라인입니다. (2025년 8월 18일 주간 기준)</p>
-                    </div>
-                    <div class="relative pl-12">
-                        <!-- WEEK 1 -->
-                        <div class="mb-12">
-                            <h3 class="text-2xl font-bold text-white mb-6 reveal">WEEK 1: 전략 수립 및 핵심 디자인</h3>
-                            <div class="relative timeline-item pb-8 reveal">
-                                <div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div>
-                                <p class="text-sm text-gray-400">Day 1 (월)</p>
-                                <h4 class="font-bold text-white mt-1">킥오프 미팅 및 요구사항 정의</h4>
-                                <p class="text-xs text-gray-500 mt-1">담당: 양사 PM / 산출물: 프로젝트 목표 합의서</p>
-                            </div>
-                            <div class="relative timeline-item pb-8 reveal">
-                                <div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div>
-                                <p class="text-sm text-gray-400">Day 2 (화)</p>
-                                <h4 class="font-bold text-white mt-1">핵심 메시지/카피라이팅 및 SEO 키워드 확정</h4>
-                                <p class="text-xs text-gray-500 mt-1">담당: 기획팀 / 산출물: 카피라이팅 최종안, 타겟 키워드 리스트</p>
-                            </div>
-                            <div class="relative timeline-item pb-8 reveal">
-                                <div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div>
-                                <p class="text-sm text-gray-400">Day 3 (수)</p>
-                                <h4 class="font-bold text-white mt-1">와이어프레임 설계 및 디자인 시스템 확정</h4>
-                                <p class="text-xs text-gray-500 mt-1">담당: 디자인팀 / 산출물: 페이지 구조 설계도, 컬러/폰트/버튼 가이드</p>
-                            </div>
-                             <div class="relative timeline-item pb-8 reveal">
-                                <div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div>
-                                <p class="text-sm text-gray-400">Day 4 (목)</p>
-                                <h4 class="font-bold text-white mt-1">핵심 콘텐츠(지도 그래픽, 아이콘 등) 제작</h4>
-                                <p class="text-xs text-gray-500 mt-1">담당: 디자인팀 / 산출물: 페이지용 시각 자료</p>
-                            </div>
-                             <div class="relative timeline-item pb-8 reveal">
-                                <div class="timeline-dot bg-yellow-400 border-yellow-400"><div class="w-2 h-2 bg-gray-900 rounded-full"></div></div>
-                                <p class="text-sm text-gray-400">Day 5 (금)</p>
-                                <h4 class="font-bold text-yellow-400 mt-1">1주차 중간 보고 및 피드백 반영</h4>
-                                <p class="text-xs text-gray-500 mt-1">담당: 양사 PM / 산출물: 중간 보고서, 수정사항 목록</p>
-                            </div>
+                    <div class="mt-8 reveal">
+                        <!-- Desktop Table -->
+                        <div class="hidden md:block">
+                            <table class="w-full text-sm text-left text-gray-300 bg-gray-800/50 rounded-lg overflow-hidden">
+                                <thead class="text-xs text-gray-400 uppercase">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-4">구분</th>
+                                        <th scope="col" class="px-6 py-4">Before (현재)</th>
+                                        <th scope="col" class="px-6 py-4 text-cyan-300">After (2주 후)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-t border-gray-700"><th scope="row" class="px-6 py-4 font-medium text-white">역할</th><td class="px-6 py-4">낡은 회사 소개서</td><td class="px-6 py-4 font-bold accent-cyan">24시간 디지털 영업사원</td></tr>
+                                    <tr class="border-t border-gray-700"><th scope="row" class="px-6 py-4 font-medium text-white">성과</th><td class="px-6 py-4">문의 0건</td><td class="px-6 py-4 font-bold accent-cyan">신규 영업 문의 발생</td></tr>
+                                    <tr class="border-t border-gray-700"><th scope="row" class="px-6 py-4 font-medium text-white">노출</th><td class="px-6 py-4">검색 결과 없음</td><td class="px-6 py-4 font-bold accent-cyan">구글/네이버 상위 노출</td></tr>
+                                    <tr class="border-t border-gray-700"><th scope="row" class="px-6 py-4 font-medium text-white">신뢰도</th><td class="px-6 py-4">정보 업데이트 부재</td><td class="px-6 py-4 font-bold accent-cyan">최신 정보 기반 전문가</td></tr>
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- WEEK 2 -->
-                        <div>
-                            <h3 class="text-2xl font-bold text-white mb-6 reveal">WEEK 2: 구현, 테스트 및 최종 오픈</h3>
-                             <div class="relative timeline-item pb-8 reveal">
-                                <div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div>
-                                <p class="text-sm text-gray-400">Day 6 (월)</p>
-                                <h4 class="font-bold text-white mt-1">메인 페이지 퍼블리싱 및 인터랙션 구현</h4>
-                                <p class="text-xs text-gray-500 mt-1">담당: 개발팀 / 산출물: 동작 가능한 1차 웹페이지</p>
+                        <!-- Mobile Cards -->
+                        <div class="md:hidden grid grid-cols-1 gap-4">
+                            <div class="bg-gray-800/50 rounded-lg p-4">
+                                <h4 class="font-bold text-white text-lg">역할</h4>
+                                <p class="text-gray-400 mt-2">Before: 낡은 회사 소개서</p>
+                                <p class="font-bold accent-cyan mt-1">After: 24시간 디지털 영업사원</p>
                             </div>
-                             <div class="relative timeline-item pb-8 reveal">
-                                <div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div>
-                                <p class="text-sm text-gray-400">Day 7-8 (화-수)</p>
-                                <h4 class="font-bold text-white mt-1">모바일 환경 최적화 및 반응형 테스트</h4>
-                                <p class="text-xs text-gray-500 mt-1">담당: 개발팀 / 산출물: 모든 기기 대응 가능한 웹페이지</p>
+                             <div class="bg-gray-800/50 rounded-lg p-4">
+                                <h4 class="font-bold text-white text-lg">성과</h4>
+                                <p class="text-gray-400 mt-2">Before: 문의 0건</p>
+                                <p class="font-bold accent-cyan mt-1">After: 신규 영업 문의 발생</p>
                             </div>
-                             <div class="relative timeline-item pb-8 reveal">
-                                <div class="timeline-dot bg-yellow-400 border-yellow-400"><div class="w-2 h-2 bg-gray-900 rounded-full"></div></div>
-                                <p class="text-sm text-gray-400">Day 9 (목)</p>
-                                <h4 class="font-bold text-yellow-400 mt-1">최종 QA 및 클라이언트 검수</h4>
-                                <p class="text-xs text-gray-500 mt-1">담당: QA팀, 양사 PM / 산출물: 최종 수정 요청서(QAL)</p>
+                             <div class="bg-gray-800/50 rounded-lg p-4">
+                                <h4 class="font-bold text-white text-lg">노출</h4>
+                                <p class="text-gray-400 mt-2">Before: 검색 결과 없음</p>
+                                <p class="font-bold accent-cyan mt-1">After: 구글/네이버 상위 노출</p>
                             </div>
-                             <div class="relative timeline-item reveal">
-                                <div class="timeline-dot bg-green-500 border-green-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></div>
-                                <p class="text-sm text-gray-400">Day 10 (금)</p>
-                                <h4 class="font-bold text-green-400 mt-1">최종 수정사항 반영 및 정식 오픈</h4>
-                                <p class="text-xs text-gray-500 mt-1">담당: 개발팀, 양사 PM / 산출물: 성공적인 신규 웹사이트</p>
+                             <div class="bg-gray-800/50 rounded-lg p-4">
+                                <h4 class="font-bold text-white text-lg">신뢰도</h4>
+                                <p class="text-gray-400 mt-2">Before: 정보 업데이트 부재</p>
+                                <p class="font-bold accent-cyan mt-1">After: 최신 정보 기반 전문가</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
+        
+        <!-- 실행 계획 -->
+        <section id="roadmap" class="section-container bg-gray-900/30">
+             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <h2 class="text-2xl font-bold text-white reveal">단 2주, 속도와 결과 모두를 잡는 상세 실행 계획</h2>
+                    <p class="mt-2 text-gray-400 reveal">성공적인 프로젝트를 위한 체계적인 타임라인입니다. (2025년 8월 18일 주간 기준)</p>
+                </div>
+                <div class="relative pl-8 md:pl-12">
+                    <!-- WEEK 1 -->
+                    <div class="mb-12">
+                        <h3 class="text-2xl font-bold text-white mb-6 reveal">WEEK 1: 전략 수립 및 핵심 디자인</h3>
+                        <div class="relative timeline-item pb-8 reveal"><div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div><p class="text-sm text-gray-400">Day 1 (월)</p><h4 class="font-bold text-white mt-1">킥오프 미팅 및 요구사항 정의</h4><p class="text-xs text-gray-500 mt-1">담당: 양사 PM / 산출물: 프로젝트 목표 합의서</p></div>
+                        <div class="relative timeline-item pb-8 reveal"><div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div><p class="text-sm text-gray-400">Day 2 (화)</p><h4 class="font-bold text-white mt-1">핵심 메시지/카피라이팅 및 SEO 키워드 확정</h4><p class="text-xs text-gray-500 mt-1">담당: 기획팀 / 산출물: 카피라이팅 최종안, 타겟 키워드 리스트</p></div>
+                        <div class="relative timeline-item pb-8 reveal"><div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div><p class="text-sm text-gray-400">Day 3 (수)</p><h4 class="font-bold text-white mt-1">와이어프레임 설계 및 디자인 시스템 확정</h4><p class="text-xs text-gray-500 mt-1">담당: 디자인팀 / 산출물: 페이지 구조 설계도, 컬러/폰트/버튼 가이드</p></div>
+                        <div class="relative timeline-item pb-8 reveal"><div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div><p class="text-sm text-gray-400">Day 4 (목)</p><h4 class="font-bold text-white mt-1">핵심 콘텐츠(지도 그래픽, 아이콘 등) 제작</h4><p class="text-xs text-gray-500 mt-1">담당: 디자인팀 / 산출물: 페이지용 시각 자료</p></div>
+                        <div class="relative timeline-item pb-8 reveal"><div class="timeline-dot bg-yellow-400 border-yellow-400"><div class="w-2 h-2 bg-gray-900 rounded-full"></div></div><p class="text-sm text-gray-400">Day 5 (금)</p><h4 class="font-bold text-yellow-400 mt-1">1주차 중간 보고 및 피드백 반영</h4><p class="text-xs text-gray-500 mt-1">담당: 양사 PM / 산출물: 중간 보고서, 수정사항 목록</p></div>
+                    </div>
+                    <!-- WEEK 2 -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-white mb-6 reveal">WEEK 2: 구현, 테스트 및 최종 오픈</h3>
+                        <div class="relative timeline-item pb-8 reveal"><div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div><p class="text-sm text-gray-400">Day 6 (월)</p><h4 class="font-bold text-white mt-1">메인 페이지 퍼블리싱 및 인터랙션 구현</h4><p class="text-xs text-gray-500 mt-1">담당: 개발팀 / 산출물: 동작 가능한 1차 웹페이지</p></div>
+                        <div class="relative timeline-item pb-8 reveal"><div class="timeline-dot"><div class="w-2 h-2 bg-cyan-400 rounded-full"></div></div><p class="text-sm text-gray-400">Day 7-8 (화-수)</p><h4 class="font-bold text-white mt-1">모바일 환경 최적화 및 반응형 테스트</h4><p class="text-xs text-gray-500 mt-1">담당: 개발팀 / 산출물: 모든 기기 대응 가능한 웹페이지</p></div>
+                        <div class="relative timeline-item pb-8 reveal"><div class="timeline-dot bg-yellow-400 border-yellow-400"><div class="w-2 h-2 bg-gray-900 rounded-full"></div></div><p class="text-sm text-gray-400">Day 9 (목)</p><h4 class="font-bold text-yellow-400 mt-1">최종 QA 및 클라이언트 검수</h4><p class="text-xs text-gray-500 mt-1">담당: QA팀, 양사 PM / 산출물: 최종 수정 요청서(QAL)</p></div>
+                        <div class="relative timeline-item reveal"><div class="timeline-dot bg-green-500 border-green-500"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg></div><p class="text-sm text-gray-400">Day 10 (금)</p><h4 class="font-bold text-green-400 mt-1">최종 수정사항 반영 및 정식 오픈</h4><p class="text-xs text-gray-500 mt-1">담당: 개발팀, 양사 PM / 산출물: 성공적인 신규 웹사이트</p></div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
     
     <footer class="bg-gray-900 border-t border-gray-700/50">
@@ -315,8 +301,8 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // 스크롤 애니메이션
             const revealElements = document.querySelectorAll('.reveal');
-
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -326,9 +312,25 @@
             }, {
                 threshold: 0.1
             });
-
             revealElements.forEach(element => {
                 observer.observe(element);
+            });
+
+            // 모바일 메뉴 토글
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const svgs = mobileMenuButton.querySelectorAll('svg');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+                svgs.forEach(svg => svg.classList.toggle('hidden'));
+            });
+            
+            // 모바일 메뉴 링크 클릭 시 메뉴 닫기
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    svgs.forEach(svg => svg.classList.toggle('hidden'));
+                });
             });
         });
     </script>
